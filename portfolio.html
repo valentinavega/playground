@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Val Vega — UX Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #111110;
+      --gray-dark: #4a4a48;
+      --gray-mid: #8a8a87;
+      --gray-light: #d8d8d5;
+      --gray-subtle: #f2f2f0;
+      --white: #ffffff;
+      --accent: #1a1a1a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 48px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: var(--gray-light); }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: var(--black);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray-dark);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .nav-links a:hover { color: var(--black); }
+
+    /* ── PAGES ───────────────────────────────────────────── */
+    .page {
+      display: none;
+      min-height: 100vh;
+    }
+    .page.active { display: block; }
+
+    /* ── HOME ────────────────────────────────────────────── */
+    #home {
+      padding-top: 160px;
+    }
+
+    .hero {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 48px 120px;
+    }
+
+    .hero-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 6vw, 72px);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      margin-bottom: 28px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gray-dark);
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--gray-dark);
+      max-width: 520px;
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────── */
+    .section-divider {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 48px;
+      border-top: 1px solid var(--gray-light);
+      margin-bottom: 64px;
+    }
+
+    /* ── WORK SECTION ────────────────────────────────────── */
+    .work-section {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 48px 160px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+    }
+
+    /* ── PROJECT CARD ────────────────────────────────────── */
+    .project-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--gray-light);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.25s;
+      text-decoration: none;
+      color: inherit;
+      background: var(--white);
+    }
+    .project-card:hover {
+      border-color: var(--gray-dark);
+      transform: translateY(-2px);
+    }
+
+    .project-image {
+      background: var(--gray-subtle);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-image-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--gray-mid);
+    }
+
+    .project-image-placeholder svg {
+      opacity: 0.4;
+    }
+
+    .project-image-placeholder span {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .project-info {
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .project-meta {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      border: 1px solid var(--gray-light);
+      border-radius: 2px;
+      padding: 4px 10px;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--gray-dark);
+      flex: 1;
+      margin-bottom: 40px;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .project-link svg {
+      transition: transform 0.2s;
+    }
+
+    .project-card:hover .project-link svg {
+      transform: translateX(4px);
+    }
+
+    /* ── PROJECT PAGE ────────────────────────────────────── */
+    #project {
+      padding-top: 120px;
+    }
+
+    .project-page-header {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-mid);
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      margin-bottom: 64px;
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .back-btn:hover { color: var(--black); }
+    .back-btn svg { transition: transform 0.2s; }
+    .back-btn:hover svg { transform: translateX(-3px); }
+
+    .project-page-meta {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .project-page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      margin-bottom: 24px;
+      max-width: 640px;
+    }
+
+    .project-page-subtitle {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--gray-dark);
+      max-width: 520px;
+      margin-bottom: 64px;
+    }
+
+    /* ── PROJECT DETAIL STATS ───────────────────────────── */
+    .project-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--gray-light);
+      border-left: 1px solid var(--gray-light);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 80px;
+    }
+
+    .stat-item {
+      padding: 28px 32px;
+      border-right: 1px solid var(--gray-light);
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    /* ── CONTENT BLOCKS ─────────────────────────────────── */
+    .content-area {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 48px 160px;
+    }
+
+    .content-block {
+      margin-bottom: 80px;
+    }
+
+    .content-block-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      margin-bottom: 20px;
+    }
+
+    .content-block h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .content-block p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--gray-dark);
+      max-width: 600px;
+    }
+
+    /* ── IMAGE PLACEHOLDER BLOCKS ───────────────────────── */
+    .image-placeholder {
+      background: var(--gray-subtle);
+      border: 1px dashed var(--gray-light);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--gray-mid);
+      padding: 80px 40px;
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .image-placeholder svg { opacity: 0.3; }
+
+    .image-placeholder p {
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+    }
+
+    .image-placeholder.tall { padding: 160px 40px; }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--gray-light);
+      padding: 40px 48px;
+      max-width: 880px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-name {
+      font-size: 14px;
+      color: var(--gray-mid);
+    }
+
+    .footer-email {
+      font-size: 14px;
+      color: var(--gray-dark);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-light);
+      padding-bottom: 1px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .footer-email:hover {
+      color: var(--black);
+      border-color: var(--black);
+    }
+
+    /* ── TRANSITIONS ─────────────────────────────────────── */
+    .page {
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 680px) {
+      nav { padding: 20px 24px; }
+      .hero, .work-section, .project-page-header, .content-area { padding-left: 24px; padding-right: 24px; }
+      footer { padding: 32px 24px; flex-direction: column; gap: 12px; align-items: flex-start; }
+      .project-card { grid-template-columns: 1fr; }
+      .project-stats { grid-template-columns: 1fr; }
+      .section-divider { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a class="nav-logo" onclick="showPage('home')">Val Vega</a>
+    <ul class="nav-links">
+      <li><a onclick="showPage('home')">Work</a></li>
+    </ul>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div id="home" class="page active">
+    <section class="hero">
+      <p class="hero-label">UX Designer</p>
+      <h1>hi there</h1>
+      <p class="hero-desc">I'm Val — a UX designer focused on turning complex problems into clear, intuitive products. Based wherever the work is good.</p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section class="work-section">
+      <div class="section-header">
+        <span class="section-title">Selected work</span>
+      </div>
+
+      <!-- Project Card -->
+      <div class="project-card" onclick="showPage('project')">
+        <div class="project-image">
+          <div class="project-image-placeholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <path d="M21 15l-5-5L5 21"/>
+            </svg>
+            <span>Add cover image</span>
+          </div>
+        </div>
+        <div class="project-info">
+          <div>
+            <div class="project-meta">
+              <span class="tag">UX Research</span>
+              <span class="tag">Product Design</span>
+            </div>
+            <h2 class="project-title">Project Title Goes Here</h2>
+            <p class="project-desc">A short description of the project, the problem you solved, and the impact it had. Replace this with your own summary — one to three sentences works well.</p>
+          </div>
+          <span class="project-link">
+            View case study
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span class="footer-name">Val Vega · UX Designer</span>
+      <a href="mailto:valvegadesign@gmail.com" class="footer-email">valvegadesign@gmail.com</a>
+    </footer>
+  </div>
+
+  <!-- PROJECT PAGE -->
+  <div id="project" class="page">
+    <div class="project-page-header">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        All work
+      </button>
+
+      <div class="project-page-meta">
+        <span class="tag">UX Research</span>
+        <span class="tag">Product Design</span>
+      </div>
+
+      <h1 class="project-page-title">Project Title Goes Here</h1>
+      <p class="project-page-subtitle">A concise summary of the project — the context, the challenge, and the outcome. Keep it to two or three sentences that give a reader a reason to keep scrolling.</p>
+
+      <div class="project-stats">
+        <div class="stat-item">
+          <p class="stat-label">Role</p>
+          <p class="stat-value">Add your role</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-label">Timeline</p>
+          <p class="stat-value">Add timeline</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-label">Platform</p>
+          <p class="stat-value">Add platform</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-area">
+
+      <!-- Cover image placeholder -->
+      <div class="image-placeholder tall">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <p>Cover image or hero visual</p>
+      </div>
+
+      <!-- Overview section -->
+      <div class="content-block">
+        <p class="content-block-label">01 — Overview</p>
+        <h2>The Problem</h2>
+        <p>Describe the problem you were solving. What was broken, confusing, or missing for users? Give the reader context for why this project existed and who it was for.</p>
+      </div>
+
+      <!-- Image placeholder -->
+      <div class="image-placeholder">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <p>Research findings / user quotes / early sketches</p>
+      </div>
+
+      <!-- Research section -->
+      <div class="content-block">
+        <p class="content-block-label">02 — Research</p>
+        <h2>What We Learned</h2>
+        <p>Summarize your research process and key insights. What methods did you use? What surprised you? What shaped the direction of the design?</p>
+      </div>
+
+      <!-- Image placeholder -->
+      <div class="image-placeholder">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <p>Wireframes / iterations / design explorations</p>
+      </div>
+
+      <!-- Design section -->
+      <div class="content-block">
+        <p class="content-block-label">03 — Design</p>
+        <h2>The Solution</h2>
+        <p>Walk through the design decisions you made. Why did you choose this approach? What did you try and discard? Show the work, not just the final output.</p>
+      </div>
+
+      <!-- Image placeholder -->
+      <div class="image-placeholder tall">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <p>Final designs / prototype / shipped screens</p>
+      </div>
+
+      <!-- Outcome section -->
+      <div class="content-block">
+        <p class="content-block-label">04 — Outcome</p>
+        <h2>Results & Reflection</h2>
+        <p>What happened after launch? Share metrics, user feedback, or qualitative wins. Then reflect — what would you do differently, and what did you learn?</p>
+      </div>
+
+    </div>
+
+    <footer>
+      <span class="footer-name">Val Vega · UX Designer</span>
+      <a href="mailto:valvegadesign@gmail.com" class="footer-email">valvegadesign@gmail.com</a>
+    </footer>
+  </div>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Scrolled nav border
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+</body>
+</html>
